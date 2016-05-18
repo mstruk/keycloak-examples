@@ -47,6 +47,10 @@
             <artifactId>httpclient</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.keycloak.quickstart</groupId>
+            <artifactId>keycloak-quickstart-service-utils</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

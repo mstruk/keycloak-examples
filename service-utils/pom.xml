@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.keycloak.quickstart</groupId>
+        <artifactId>keycloak-quickstart-parent</artifactId>
+        <version>0.5-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>keycloak-quickstart-service-utils</artifactId>
+
+    <name>Keycloak Quickstart Service Utils</name>
+    <description/>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet</groupId>
+            <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>service-utils</finalName>
+    </build>
+</project>

@@ -16,7 +16,6 @@
  */
 package org.keycloak.quickstart.appjee;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -35,12 +34,13 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.TrustStrategy;
 import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.quickstart.util.ServiceLocator;
 import org.keycloak.util.JsonSerialization;
 
 /**
@@ -84,25 +84,15 @@ public class ServiceClient {
         }
     }
 
-    private static String getServiceUrl(HttpServletRequest req, KeycloakSecurityContext session) {
-        String uri = req.getServletContext().getInitParameter(SERVICE_URI_INIT_PARAM_NAME);
-        if (uri != null && !uri.contains("localhost"))
-        	return uri;
+    private static String getServiceUrl(HttpServletRequest req) {
+        return ServiceLocator.getServiceUrl(req).toExternalForm();
+    }
 
-    	String ip = req.getLocalAddr();
-
-        if (ip != null){
-	        ip = "localhost";
-	        try {
-	        	ip = java.net.InetAddress.getLocalHost().getHostAddress();
-	        } catch (Exception e){
-	            e.printStackTrace();
-	        }
-        }
-        
-        System.out.println("!!!!! ip " + ip);
-
-        return "http://" + ip + ":8080/service";
+    public static HttpClient createHttpClient() {
+        // If I understand things correctly
+        // this will automatically use settings from -Djavax.net.ssl.trustStore
+        // There should also be no problems with SNI
+        return HttpClients.createDefault();
     }
     
     public static HttpClient createHttpClient_AcceptsUntrustedCerts() throws Exception {
@@ -145,8 +135,8 @@ public class ServiceClient {
     public static String callService(HttpServletRequest req, KeycloakSecurityContext session, String action) throws Failure {
         HttpClient client = null;
         try {
-        	client = createHttpClient_AcceptsUntrustedCerts();
-            HttpGet get = new HttpGet(getServiceUrl(req, session) + "/" + action);
+        	client = createHttpClient();
+            HttpGet get = new HttpGet(getServiceUrl(req) + "/" + action);
             if (session != null) {
                 get.addHeader("Authorization", "Bearer " + session.getTokenString());
             }

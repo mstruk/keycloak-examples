@@ -48,6 +48,7 @@
     </contributors>
 
     <modules>
+        <module>service-utils</module>
         <module>service-jaxrs</module>
         <module>war-app-html5</module>
         <module>app-jee</module>
@@ -102,6 +103,11 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${version.httpclient}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak.quickstart</groupId>
+                <artifactId>keycloak-quickstart-service-utils</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
